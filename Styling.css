@@ -1,0 +1,174 @@
+  
+        .customercare {
+            border: none;
+            padding: 10px;
+            font-size: 50px;
+            font-weight: 600;
+            color: #000000da;
+
+        }
+        .dot {
+            height: 50px;
+            width: 50px;
+            border-radius: 100px;
+            /* rounds corners */
+            background: rgb(174, 0, 255);
+            float: left;
+            background-repeat: no-repeat;
+            background-size: 40px;
+            vertical-align: middle;
+            background-position: center;
+            -moz-box-shadow: 3px 3px 3px 3px #7777773a;
+            -webkit-box-shadow: 3px 3px 3px 3px #77777741;
+            box-shadow: 3px 3px 3px 3px #77777741;
+            position: fixed;
+        }
+
+        .mediaSect {
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            float: left;
+            height: 70%;
+            width: 30%;
+            border-color: darkgoldenrod;
+            border-style: solid;
+        }
+
+        
+        .ContactUsInputs {
+            font-size: 20px;
+
+        }
+
+        .selectedBtn {
+            font-size: 12pt;
+            padding: 5px;
+            background-color: #1fa3a5;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: solid;
+        }
+
+        .tabBtn {
+            font-size: 12pt;
+            padding: 5px;
+            background-color: darkturquoise;
+            border: thin;
+            border-color: dodgerblue;
+
+        }
+
+        .tabBtn:hover {
+            background-color: cadetblue;
+        }
+        .tellusbtn{
+            border-radius: 5px;font-size: 15px;background-color: #4095e9;border-style: none;padding: 7px;color: floralwhite;width: 130px;
+        }
+
+        .contactusHeading{
+            background-color: #1fa3a5;
+            border-bottom-right-radius: 50px 70px;
+            
+        }
+        
+        .tellusbtn:hover{
+            background-color: #005cb8
+        }
+        .treamentsDetails {
+            font-size: 20pt;
+            font-weight: normal;
+            list-style: none;
+        }
+
+        .Cover {
+            background-image: url(pexels-kristina-paukshtite-4256540.jpg);
+            width: 100%;
+            height: 110%;
+            font-family: 'Courier New', Courier, monospace;
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-position-y: top;
+            background-size:cover;
+
+        }
+
+        .coverHeading {
+            font-weight: 900;
+        }
+
+        .NavItem {
+            background-color: rgb(216, 191, 216);
+            padding: 10px;
+            float: left;
+        }
+
+        .Header {
+            font-size: 20pt;
+            padding: 10px;
+
+        }
+
+        .treatmentsHeading {
+            font-size: 30pt;
+            font-weight: 500;
+        }
+
+        .treatment {
+            background-color: rgb(218, 214, 214);
+            width: 100%;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .treatmentSeparator {
+            width: 25%;
+            color: #000000;
+            border-style: solid;
+            font-weight: 900;
+        }
+
+        .price {
+            font-size: 20pt;
+            font-weight: lighter;
+        }
+
+        .btnBook {
+            background-color: violet;
+            border: thin;
+            padding: 10px;
+            width: 180pt;
+            font-size: 14pt;
+            background-image: url("whatsapp_96px.png");
+            background-repeat: no-repeat;
+            background-size: 40px;
+        }
+
+        .confirmQuestion {
+            color: #ffffff;
+            font-size: 18pt;
+            font-weight: 800;
+        }
+
+        .bookingDialog {
+            color: rgba(172, 255, 47, 0.658);
+            padding-bottom: 30pt;
+        }
+
+        .btnWhatsApp {
+            color: white;
+            background: rgb(95, 151, 12);
+            width: 150pt;
+            padding: 1%;
+            border: thin;
+        }
+
+        .btnCall {
+            color: white;
+            background: rgb(94, 153, 7);
+            width: 90pt;
+            padding: 1%;
+            border: thin;
+
+        }
