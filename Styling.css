@@ -64,7 +64,7 @@
             background-color: cadetblue;
         }
         .tellusbtn{
-            border-radius: 5px;font-size: 15px;background-color: #4095e9;border-style: none;padding: 7px;color: floralwhite;width: 130px;
+            border-radius: 5px;font-size: 30px;background-color: #4095e9;border-style: none;padding: 10px;color: floralwhite;width: 200px;
         }
 
         .contactusHeading{
@@ -112,7 +112,7 @@
 
         .treatmentsHeading {
             font-size: 65px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .treatment {
@@ -138,11 +138,11 @@
             background-color: violet;
             border: thin;
             padding: 15px;
-            width: 200pt;
+            width: 250px;
             font-size: 35px;
             background-image: url("whatsapp_96px.png");
             background-repeat: no-repeat;
-            background-size: 50px;
+            background-size: 70px;
         }
 
         .confirmQuestion {
