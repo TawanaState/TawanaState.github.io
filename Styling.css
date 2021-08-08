@@ -64,7 +64,7 @@
             background-color: cadetblue;
         }
         .tellusbtn{
-            border-radius: 5px;font-size: 30px;background-color: #4095e9;border-style: none;padding: 10px;color: floralwhite;width: 200px;
+            border-radius: 5px;font-size: 30px;background-color: #4095e9;border-style: none;padding: 10px;color: floralwhite;width: 400px;
         }
 
         .contactusHeading{
@@ -138,7 +138,7 @@
             background-color: violet;
             border: thin;
             padding: 15px;
-            width: 250px;
+            width: 300px;
             font-size: 35px;
             background-image: url("whatsapp_96px.png");
             background-repeat: no-repeat;
