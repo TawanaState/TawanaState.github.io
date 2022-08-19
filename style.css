@@ -1,0 +1,126 @@
+body{
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+}
+::-webkit-scrollbar-corner {
+    background: none;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: #cecece;
+}
+::-webkit-scrollbar-track {
+    opacity: 0;
+}
+header{
+    background-image: url(/assets/img/features-1.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: scroll;
+    background-size:cover;
+}
+nav{
+    background-color: rgba(68, 68, 68, 0.562) !important;
+}
+.header{
+    background-color: rgba(68, 68, 68, 0.562);
+    height:95vh;
+}
+.arrow-down{
+    background-color: rgba(68, 68, 68, 0.253);
+    font-size: 30px;
+    position: relative;
+    bottom: 15vh;
+    left:calc(50% - 35px);
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+    animation-name: arrow-down-animation;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+    animation-duration: 2s;
+    animation-delay: 0s;
+    animation-timing-function: ease-in-out;
+}
+.social-contact > a{
+    opacity: 0.99;
+    color: white !important;
+    background-color: rgba(0, 0, 0, 0.137);
+    border-width: 2px;
+}
+
+/*
+TYPED ANIMATION STYLING
+*/
+.title-typed > span{
+    padding-bottom: 4px;
+    letter-spacing: 1px;
+    border-bottom: 3px solid rgba(106, 106, 230, 0.76);
+}
+
+.typed-cursor{
+    opacity: 1;
+  }
+  .typed-cursor.typed-cursor--blink{
+    animation: typedjsBlink 0.7s infinite;
+    -webkit-animation: typedjsBlink 0.7s infinite;
+            animation: typedjsBlink 0.7s infinite;
+  }
+  @keyframes typedjsBlink{
+    50% { opacity: 0.0; }
+  }
+  @-webkit-keyframes typedjsBlink{
+    0% { opacity: 1; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1; }
+  }
+
+
+/**
+* PortFolio Styling
+*/
+.portfolio-info{
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.164), rgba(255, 255, 255, 0));
+    padding-top: 3rem!important;
+    margin-top: -6rem;
+}
+.portfolio-links  a{
+    background-color: rgba(0, 0, 0, 0.116);
+}
+.portfolio-links :last-child{
+    margin-top: -2rem!important;
+}
+.portfolio-item-card{
+    background-image: url(/assets/img/features-1.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: scroll;
+    background-size: cover;
+    
+}
+.portfolio-item-card img{
+    opacity: 0;
+}
+
+
+@keyframes arrow-down-animation{
+    0%{
+        background-color: rgba(68, 68, 68, 0.308);
+        bottom: 18vh;
+    }
+    50%{
+        background-color: rgba(68, 68, 68, 0.450);
+        bottom: 24vh;
+    }
+    100%{
+        background-color: rgba(68, 68, 68, 0.252);
+        bottom: 18vh;
+    }
+}
+
+@media(min-width:900px){
+
+}

@@ -1,0 +1,186 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="application-name" content="TawananyashaMukoriwoAddTestimonial">
+    <meta name="description" content="Tell the world about your experience of working Tawananyasha Mukoriwo as a Software Developer">
+    <meta name="keywords" content="Testimonial, Young Software Developer, Harare, Zimbwbwe, Mukoriwo, Tawananyasha, #State, Wawwy, Machine Learning Engineer">
+    <meta name="author" content="Tawananyasha Mukoriwo">
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="theme-color" content="#68A4C4">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#68A4C4">
+    <meta property="og:url" content="https://TawanaState.github.io/testimonial.html"> 
+    <meta property="og:type" content="website"> 
+    <meta property="og:title" content="Add Testimonial"> 
+    <meta property="og:image" content="https://example.com/image.jpg"> 
+    <meta property="og:description" content="Tell the world about your experience with working with Tawananyasha Mukoriwo"> 
+    <meta property="og:site_name" content="Tawanyasha Mukoriwo - Young Software Developer">
+    <meta property="og:locale" content="en_US"> 
+    <meta property="article:author" content="Tawanyasha Mukoriwo">
+    
+
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tawananyasha Mukoriwo ~ Add Testimonial</title>
+    <script src="../assets/vendor/jquery-3.6.0.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="../assets/vendor/aos/aos.css">
+    <link rel="stylesheet" href="../assets/vendor/anchor/main.css">
+    
+</head>
+<body data-aos-easing="ease" data-aos-duration="700" data-aos-delay="0" class="text-dark">
+
+    <header id="hero" class="p-4 text-white mb-4">
+        <div class="row py-5 px-5">
+            <div class="col-12 py-5 px-5 text-center">
+                <h1 align="center">So tell me, how's it been. <br> Working with a guy like me?</h1>
+                <a href="#contact" class="btn btn-outline-info border-2 mt-5 text-info px-5">Comment</a>
+                <a href="/" class="btn btn-outline-dark mt-5 px-5 text-dark border-2">Home</a>
+            </div>
+        </div>
+    </header>
+
+
+            <section id="contact">
+                
+                <div class="container mt-5">
+                  <div class="row justify-content-center">
+          
+                    <div class="col-lg-3 col-md-4">
+          
+                      <div class="info text-center">
+                        <div>
+                          <i class="bi bi-geo-alt fs-3"></i>
+                          <p>Jabavu Dr, Highfield<br>Harare, Zimbabwe</p>
+                        </div>
+          
+                        <div>
+                          <i class="bi bi-envelope fs-3"></i>
+                          <p>tawmuks@gmail.com</p>
+                        </div>
+          
+                        <div>
+                          <i class="bi bi-phone fs-3"></i>
+                          <p>+263 779 936 807</p>
+                        </div>
+                      </div>
+          
+                    </div>
+          
+                    <div class="col-lg-5 col-md-8">
+                      <div class="form">
+                        <form action="mailto:tawmuks@gmail.com" method="get" role="form">
+                          <div class="form-group">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Name or Title" required="">
+                          </div>
+                          <div class="form-group mt-3">
+                            <textarea class="form-control" name="body" rows="5" placeholder="Testimonial" required=""></textarea>
+                          </div>
+                          <div class="text-center"><button class="btn btn-secondary" type="submit">Send Testimonial</button></div>
+                        </form>
+                      </div>
+                    </div>
+          
+                  </div>
+          
+                </div>
+              </section>
+        
+    <script src="../assets/vendor/jquery-3.6.0.js"></script>
+    <script src="../assets/vendor/aos/aos.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/vendor/typed.js/typed.min.js"></script>
+    <script src="../assets/vendor/anchor/functions.js"></script>
+    <script>
+        AOS.init({
+            duration: 700
+        });
+        document.querySelector('form').addEventListener('submit', event => {
+            event.preventDefault();
+            window.open(`mailto:tawmuks@gmail.com?subject=${document.querySelector('form #subject').value}&body=${document.querySelector('form textarea').value}`)
+        })
+    </script>
+
+    <style>
+        a{
+            color: rgb(75, 75, 75);
+            text-decoration: none!important;
+        }
+        #hero {
+            width: 100%;
+            height: 80vh;
+            overflow: hidden;
+            position: relative;
+          }
+          #hero::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 130%;
+            height: 95%;
+            background: linear-gradient(to right, rgba(30, 67, 86, 0.8), rgba(30, 67, 86, 0.6)), url(/assets/img/features-1.svg) center top no-repeat;
+            border-radius: 0 0 50% 50%;
+            transform: translateX(-50%) rotate(0deg);
+          }
+          #hero::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 130%;
+            height: 96%;
+            background: #68A4C4;
+            opacity: 0.3;
+            border-radius: 0 0 50% 50%;
+            transform: translateX(-50%) translateY(18px) rotate(2deg);
+          }
+          #hero > div{
+              z-index: 1;
+              opacity: 1;
+              position: relative;
+          }
+          #hero > div h1{
+              font-size: 4rem;
+          }
+          @media (max-width: 768px) {
+            #hero::after {
+              width: 180%;
+              height: 95%;
+              border-radius: 0 0 50% 50%;
+              transform: translateX(-50%) rotate(0deg);
+            }
+            #hero::before {
+              top: 0;
+              width: 180%;
+              height: 94%;
+              border-radius: 0 0 50% 50%;
+              transform: translateX(-50%) translateY(20px) rotate(4deg);
+            }
+            h1{
+                font-size: 1.8rem;
+            }
+            .row{
+                padding: 0px!important;
+            }
+            .col-12{
+                padding: 0px!important;
+            }
+
+          }
+          .icon > i{
+              border-radius: 50%;
+              padding: 1rem;
+              color: white;
+              height: 40px;
+              width: 40px;
+              font-size: x-large;
+          }
+
+    </style>
+    
+</body>
+</html>
