@@ -17,7 +17,7 @@ window.myWebInfo = {
         {
             title : "Asher Bvuwayi",
             image : "/assets/img/empty_box_128px.png",
-            content : "I hereby testify, Tawana is freaking good!",
+            content : "Tawana a beautiful character, willing to learn, possesses a  can do attitude,resourceful and a very good developer with a bright future, have no doubt this boy will do great things.",
             link : "wa.com"
         }
     ]
