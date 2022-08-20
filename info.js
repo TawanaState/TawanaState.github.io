@@ -19,6 +19,12 @@ window.myWebInfo = {
             image : "/assets/img/empty_box_128px.png",
             content : "Tawana a beautiful character, willing to learn, possesses a  can do attitude,resourceful and a very good developer with a bright future, have no doubt this boy will do great things.",
             link : "wa.com"
-        }
+        },
+{
+title : "Bekithemba Sibanda",
+image : "",
+content : "A pleasure to work with ,a genius in the field and very adaptive. Scope of work is not limited, be in IT ,design ,engineering. Such talent in the young man. ",
+link : "bekithembasibanda2@gmail.com",
+}
     ]
 };
