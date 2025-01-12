@@ -66,17 +66,41 @@ function toggleAudio() {
     });
 }
 
-// Switch between front-facing and environment cameras
 async function switchCamera() {
-    currentCamera = (currentCamera === 'environment') ? 'user' : 'environment'; // Toggle camera type
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop()); // Stop existing stream
+    if (isDesktop()) {
+        if (currentCamera === 'screen') {
+            currentCamera = 'environment'; // Switch back to camera
+            await initializeStream();
+        } else {
+            currentCamera = 'screen'; // Switch to screen recording
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop()); // Stop existing stream
+            }
+            try {
+                const newStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                localVideo.srcObject = newStream;
+                videoTracks = newStream.getVideoTracks();
+                stream = newStream;
+                if (currentCall) {
+                    currentCall.answer(stream); // Answer incoming call with stream
+                }
+            } catch (error) {
+                console.error("Error accessing display media.", error);
+            }
+        }
+    } else {
+        currentCamera = (currentCamera === 'environment') ? 'user' : 'environment'; // Toggle camera type
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop()); // Stop existing stream
+        }
+        await initializeStream(); // Initialize with the new camera
     }
-    await initializeStream(); // Initialize with the new camera
 }
 
 
-
+function isDesktop() {
+    return !/Mobi|Android/i.test(navigator.userAgent);
+}
 
 // To answer an incoming call
 function receiveCalls() {
