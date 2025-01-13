@@ -5,7 +5,7 @@ let ROOM_ID = getID("room_id");
 let stream;
 let videoTracks;
 let audioTracks;
-let currentCamera = 'environment'; // default camera
+let currentCamera = 'user'; // default camera
 const toggleVideoBtn = document.getElementById('toggle-video');
 const toggleAudioBtn = document.getElementById('toggle-mic');
 const switchCameraBtn = document.getElementById('toggle-camera');
