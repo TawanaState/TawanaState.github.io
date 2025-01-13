@@ -1,8 +1,6 @@
 const ID_SIZE = 36;
-const PEER_ID = generateUniqueRandomID(ID_SIZE);
-var remote_peer_id;
-const share_link = window.location.origin + window.location.pathname + "?id=" + PEER_ID;
-//var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+const PEER_ID = getID("peer_id");
+let ROOM_ID = getID("room_id");
 
 let stream;
 let videoTracks;
@@ -11,39 +9,74 @@ let currentCamera = 'environment'; // default camera
 const toggleVideoBtn = document.getElementById('toggle-video');
 const toggleAudioBtn = document.getElementById('toggle-mic');
 const switchCameraBtn = document.getElementById('toggle-camera');
-let currentCall = null; // Holds the current call object
-var peer = new Peer(PEER_ID);
+const videosdiv = document.querySelector(".videos");
+let currentCall = []; // Holds the current calls
+let ROOM_MEMBERS = []; // A list of all peers connected to the room!
 
-document.querySelector("#toggle-share").onchange = function(e) {
-    navigator.clipboard.writeText(share_link).then(function() {
-        console.log("Copied to clipboard");
-    }, function() {
-        console.log("Failed to copy to clipboard");
-    });
-}
+var peer = new Peer(PEER_ID);
+var ROOM = null;
+
 
 // Sending video stream to video element
 var localVideo = document.querySelector("#localVideo");
-var remoteVideo = document.querySelector("#remoteVideo");
 
+
+// Add SW.js
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+  
+
+
+// Function to all all peers in my currentCall
+function answerCurrentCall(stream) {
+    try {
+        currentCall.forEach((v, k) => {
+            v.answer(stream);
+        })
+        return true;
+    } catch (error) {
+        console.error(error, "--error while answering call")
+        return false;
+    }
+}
+
+// Remove Call if exists
+function removeCall(call) {
+    currentCall = [...currentCall.filter((v) => v.peer != call.peer)];
+    try {
+        document.querySelector(`video#${call.peer}`).remove();
+    } catch (error) {
+
+    }
+
+}
 
 // Function to get user media and start stream
 async function getUserMedia(constraints) {
     try {
-      const newStream = await navigator.mediaDevices.getUserMedia(constraints);
-      localVideo.srcObject = newStream;
-      
-      // Store the tracks for toggling
-      videoTracks = newStream.getVideoTracks();
-      audioTracks = newStream.getAudioTracks();
-      stream = newStream;
-      
-      // If there's an ongoing call, add the stream to it
-      if (currentCall) {
-        currentCall.answer(stream); // Answer incoming call with stream
-      }
+        const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+        localVideo.srcObject = newStream;
+        console.log(newStream);
+
+        // Store the tracks for toggling
+        videoTracks = newStream.getVideoTracks();
+        audioTracks = newStream.getAudioTracks();
+        stream = newStream;
+
+        answerCurrentCall(stream); // Answer incoming call with stream
+
     } catch (error) {
-      console.error("Error accessing media devices.", error);
+        console.error("Error accessing media devices.", error);
     }
 }
 
@@ -52,17 +85,17 @@ async function initializeStream() {
     await getUserMedia({ video: { facingMode: currentCamera }, audio: true });
 }
 
-  // Toggle video on/off
+// Toggle video on/off
 function toggleVideo() {
     videoTracks.forEach(track => {
-      track.enabled = !track.enabled; // Toggle the enabled state
+        track.enabled = !track.enabled; // Toggle the enabled state
     });
 }
 
 // Toggle audio on/off
 function toggleAudio() {
     audioTracks.forEach(track => {
-      track.enabled = !track.enabled; // Toggle the enabled state
+        track.enabled = !track.enabled; // Toggle the enabled state
     });
 }
 
@@ -105,13 +138,14 @@ function isDesktop() {
 // To answer an incoming call
 function receiveCalls() {
     peer.on('call', (incomingCall) => {
-        currentCall = incomingCall;
-        // Answer the incoming call with our media stream
-        incomingCall.answer(stream);
+        removeCall(incomingCall);// Remove it if it already exists!
+        currentCall.push(incomingCall);
+        // Answer the incoming calls with our media stream
+        answerCurrentCall(stream);
+        console.log(incomingCall);
         incomingCall.on('stream', (remoteStream) => {
-          // Handle the remote stream (if you want to display the remote video, for example)
-          remoteVideo.srcObject = remoteStream;
-          console.log('Remote stream received');
+            genVideoEl(remoteStream, incomingCall.peer)
+            console.log('Remote stream received while answering');
         });
     });
 }
@@ -119,14 +153,17 @@ function receiveCalls() {
 
 // To make an outgoing call
 function callPeer(peerId) {
-    if (stream) {
-      const call = peer.call(peerId, stream); // Call another peer with our media stream
-      call.on('stream', (remoteStream) => {
-        // Handle the remote stream from the other peer
-        remoteVideo.srcObject = remoteStream;
+    console.log(peerId, "--stream is here, and we sendin git")
+    const call = peer.call(peerId, stream); // Call another peer with our media stream
+    removeCall(call);// Remove it if it already exists!
+    currentCall.push(call);
+    // Answer the incoming calls with our media stream
+    //answerCurrentCall(stream);
+    console.log(call);
+    call.on('stream', (remoteStream) => {
+        genVideoEl(remoteStream, call.peer)
         console.log('Remote stream received');
-      });
-    }
+    });
 }
 
 
@@ -170,22 +207,78 @@ document.querySelector("#btn-start-call").onclick = (e) => {
 }
 */
 
-peer.on('open', function(id) {
-	var urlParams = new URLSearchParams(window.location.search);
-    remote_peer_id = urlParams.get('id');
-    if (remote_peer_id) {
+peer.on('open', function (id) {
+    var urlParams = new URLSearchParams(window.location.search);
+    let room_id = urlParams.get('id');
+    if (room_id) {
+        ROOM_ID = room_id;
+        initializeStream().then(() => {
+            let conn = peer.connect(room_id);// Connect to the room
+            conn.on("open", () => {
+                console.log("CONNECTED SUCCESSFULLY TO THE REMOTE ROOM");
+                conn.on("data", (data) => {// Received any data from the room
+                    if (data.type == "peerlist") {// If its the list of people in the room
+                        console.log(data, "--peers already connected")
+                        data.content.forEach((v, k) => {
+                            console.log("calling this guy", v)
+                            callPeer(v);
+                        });
+                    }
+                })
+            })
+            receiveCalls();
+        })
+
+    } else {
+        initializeStream().then(() => {
+            buildRoom();
+        })
+    }
+    /*if (remote_peer_id) {
         callPeer(remote_peer_id);
     }else{
-        receiveCalls();
-    }
+        
+    }*/
 });
 
-peer.on('connection', function(conn) {
-    conn.on('data', function(data){
-      // Will print 'hi!'
-      console.log(data, "--connected--");
+peer.on('connection', function (conn) {
+    conn.on('data', function (data) {
+        // Will print 'hi!'
+        console.log(data, "--connected--");
     });
 });
+
+peer.on('error', function (err) { console.error(err, "peer-error") });
+
+
+
+function buildRoom() {
+    ROOM = new Peer(ROOM_ID);
+
+    ROOM.on("connection", (conn) => {
+        console.log("CONNECTED TO THE BUILT ROOM----", conn.peer);
+        ROOM_MEMBERS = [...ROOM_MEMBERS.filter((v) => v != conn.peer), conn.peer]; // Making sure i remove it from the list before adding it
+        // Send PEER LIST
+        conn.on("open", () => {
+            conn.send({
+                type: "peerlist",
+                content: ROOM_MEMBERS.filter((v) => v != conn.peer)
+            });
+        })
+
+    });
+
+    ROOM.on("error", (e) => {
+        console.error(e, "--ROOM ERROR")
+    })
+
+    ROOM.on("open", () => {
+        peer.connect(ROOM_ID);
+    });
+    // I see no need to accept data from the room about peer list, since i know i am the only candidate on init
+    receiveCalls();
+}
+
 
 
 function generateUniqueRandomID(id_length) {
@@ -197,9 +290,41 @@ function generateUniqueRandomID(id_length) {
     return id;
 }
 
+function getID(name) {
+    if (localStorage.getItem(name)) {
+        return localStorage.getItem(name);
+    } else {
+        let new_id = generateUniqueRandomID(ID_SIZE);
+        localStorage.setItem(name, new_id);
+        return new_id;
+    }
+}
+
+function genVideoEl(thestream, theid) {
+    console.log(theid, "--this video is created!");
+    let new_remote;
+    if (document.querySelector(`video#${theid}`)) {
+        new_remote = document.querySelector(`video#${theid}`);
+    }else{
+        new_remote = document.createElement("video");
+        new_remote.autoplay = true;
+        //new_remote.muted = true;
+        new_remote.id = theid;
+        videosdiv.appendChild(new_remote);
+    }
+    new_remote.srcObject = thestream;
+}
+
 // Event listeners for UI buttons
 toggleVideoBtn.addEventListener('click', toggleVideo);
 toggleAudioBtn.addEventListener('click', toggleAudio);
 switchCameraBtn.addEventListener('click', switchCamera);
 
-initializeStream(); // Initialize stream with the default camera
+document.querySelector("#toggle-share").onclick = function (e) {
+    navigator.share({url : window.location.origin + window.location.pathname + "?id=" + ROOM_ID});
+    navigator.clipboard.writeText(window.location.origin + window.location.pathname + "?id=" + ROOM_ID).then(function () {
+        console.log("Copied to clipboard");
+    }, function () {
+        console.log("Failed to copy to clipboard");
+    });
+}

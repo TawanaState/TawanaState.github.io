@@ -2,26 +2,29 @@
 body{
     padding: 0px;
     margin: 0px;
-    display: grid;
-    grid-template-rows: 1fr 11fr;
-    background-color: rgb(15, 1, 24);
+    background-color: rgb(22, 27, 34);
     color: white;
     font-family:"Merriweather Sans", sans-serif;
     font-size: 2rem;
-    --accent-bg:#7262ee76;
-    --video-bg: #000000;
-    --border: 2px solid rgba(128, 128, 128, 0.57);
+    --accent-bg:#5050e0;
+    --video-bg: rgb(22, 27, 34);
+    --border: 2px solid rgba(128, 128, 128, 0.05);
+    width: 100vw;
+    height: 100dvh;
+    
+}
+*, :root{
+    overflow: hidden hidden;
 }
 main{
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 }
 main > *{
     grid-area: 1/1;
-    
     width: 100%;
     height: 100%;
 }
@@ -35,6 +38,7 @@ main > .ui > video{
     place-self: self-end;
     width: 40%;
     height: auto;
+    margin-right: 1rem;
 }
 footer{
     width: 80%;
@@ -49,18 +53,20 @@ footer{
     padding: 1rem;
     margin: 1rem 0rem;
     backdrop-filter: blur(10px);
-    background-color: #ffffff14;
+    background-color: rgba(255, 255, 255, 0.02);
     gap: .4rem;
 }
 footer > input{
     appearance: none;
     -webkit-appearance: none;
 }
-footer > input::before{
+footer > input::before, footer button{
     content: attr(default);
     display: block;
     color: white;
     border-radius: 100%;
+    border:none;
+    outline: none;
     background-color: var(--accent-bg);
     display: flex;
     flex-direction: row;
@@ -75,20 +81,15 @@ footer > input:checked::before{
 
 
 main > .videos{
-    display: flex;
+    display: grid;
     z-index: 1;
-    flex-direction: column;
-    align-items: center;
 }
 main > .videos > video{
-    flex-grow: 1;
+    height: 100%;
     width: 100%;
-    object-fit: cover;
+    
 }
 video{
-    width: 90%;
-    max-width: 100%;
-    height: auto;
     border: var(--border);
     border-radius: 5px;
     background-color: var(--video-bg);
@@ -96,14 +97,19 @@ video{
 }
 
 
-#toggle-share:hover::before{
-    animation: copied-animation 2s 1;
-}
-@keyframes copied-animation {
-    from{
-        content: "check";
+@media (min-width:700px) {
+    main > .ui > video{
+        width: 15vw;
     }
-    to{
-        content: "share";
+    main > .videos:has(video:nth-child(2)){
+        grid-template-columns: 1fr 1fr;
+    }
+    main > .videos:has(video:nth-child(5)){
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+@media (max-width:699px) {
+    main > .videos:has(video:nth-child(4)){
+        grid-template-columns: 1fr 1fr;
     }
 }

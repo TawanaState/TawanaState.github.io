@@ -3,23 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <title>Document</title>
+    <meta name="description" content="A free, simple, and open-source video conferencing tool. Host meetings easily without a backend server!">
+    <meta name="keywords" content="meet tawananyasha, video conferencing, free video calls, peer-to-peer video, open-source video chat, no backend, static site">
+    <meta name="author" content="Tawananyasha Mukoriwo">
+    <meta property="og:title" content="Meet by Tawananyasha">
+    <meta property="og:description" content="Experience seamless video conferencing without backend complexities. Free, lightweight, and open-source!">
+    <meta property="og:url" content="https://meet.tawananyasha.com">
+    <meta property="og:image" content="https://meet.tawananyasha.com/assets/img/og-image.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Meet by Tawananyasha">
+    <meta name="twitter:description" content="Seamless, peer-to-peer video conferencing without backend complexities.">
+    <meta name="twitter:image" content="https://meet.tawananyasha.com/assets/img/og-image.png">
+    <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/img/og-image.png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="manifest" href="/assets/manifest.json">
+    <title>Meet by Tawananyasha Mukoriwo - Free Video Conferencing</title>
 </head>
 
 <body>
     <main>
         <div class="videos">
-            <video id="remoteVideo" autoplay></video>
+            
         </div>
 
         <div class="ui">
-            <video id="localVideo" autoplay muted></video>
+            <video name="You" id="localVideo" autoplay muted></video>
             <footer class="buttons">
                 <input class="mso" toggled="cameraswitch" default="cameraswitch" type="checkbox" name="" id="toggle-camera">
                 <input class="mso" toggled="videocam_off" default="videocam" type="checkbox" name="" id="toggle-video">
                 <input class="mso" toggled="mic_off" default="mic" type="checkbox" name="" id="toggle-mic">
-                <input class="mso" toggled="share" default="share" type="checkbox" name="" id="toggle-share">
+                <button class="mso" id="toggle-share" toggled="share" default="share">share</button>
             </footer>
         </div>
     </main>
