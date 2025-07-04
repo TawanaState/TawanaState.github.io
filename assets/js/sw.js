@@ -8,7 +8,7 @@ const ASSETS_TO_CACHE = [
   '/assets/manifest.json', // Favicon
   '/assets/css/style.css', // Example logo image
   '/assets/js/main.js', // Example image
-  'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.jss', // Peer.js CDN (optional)
+  'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js', // Peer.js CDN (optional)
 ];
 
 // Install Event: Cache assets
