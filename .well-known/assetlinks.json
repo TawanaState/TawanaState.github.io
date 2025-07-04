@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.tawananyasha.meet.twa",
+        "sha256_cert_fingerprints": ["04:60:B9:D9:70:E8:36:36:09:8E:C2:3E:BC:2F:D5:DA:72:8F:5D:BF:F9:6B:4F:E8:B0:2D:F9:76:12:CB:73:07"]
+      }
+    }]
