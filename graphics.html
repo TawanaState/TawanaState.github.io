@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illumination Models: Phong vs Gouraud</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #111; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; }
+        #canvas-container { width: 100vw; height: 100vh; display: block; }
+        #info-panel {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(20, 20, 20, 0.85); padding: 20px;
+            border-radius: 8px; border: 1px solid #333;
+            max-width: 350px; pointer-events: none;
+            backdrop-filter: blur(5px);
+        }
+        h1 { margin: 0 0 10px 0; font-size: 1.2rem; color: #4dabf7; }
+        p { font-size: 0.9rem; line-height: 1.5; margin-bottom: 10px; color: #ccc;}
+        .highlight { color: #ff6b6b; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="info-panel">
+        <h1>Illumination Models</h1>
+        <p><strong>Gouraud Shading:</strong> Calculates lighting at the vertices. Colors are interpolated across the face.</p>
+        <p><strong>Phong Shading:</strong> Calculates lighting at every pixel. Normals are interpolated.</p>
+        <p class="highlight">How to see Gouraud fail:</p>
+        <p>1. Switch Shading to "Gouraud".<br>2. Lower the "Resolution" to 8.<br>3. Increase "Shininess".<br>Notice how the bright specular highlight warps or completely disappears because the vertices miss the light!</p>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "./three.module.js",
+                "three/addons": "./lil-gui.module.min.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { GUI } from 'three/addons';
+
+        // --- SCENE SETUP ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // --- SHADERS ---
+
+        // 1. Gouraud Shading (Lighting calculated in Vertex Shader)
+        const gouraudVertexShader = `
+            uniform vec3 lightPos;
+            uniform vec3 viewPos;
+            uniform vec3 ambientColor; uniform float ambientInt;
+            uniform vec3 diffuseColor; uniform float diffuseInt;
+            uniform vec3 specularColor; uniform float specularInt;
+            uniform float shininess;
+
+            varying vec3 vColor;
+
+            void main() {
+                vec4 worldPos = modelMatrix * vec4(position, 1.0);
+                vec3 N = normalize(normalMatrix * normal);
+                vec3 L = normalize(lightPos - worldPos.xyz);
+                vec3 V = normalize(viewPos - worldPos.xyz);
+                vec3 R = reflect(-L, N);
+
+                // Ambient
+                vec3 ambient = ambientColor * ambientInt;
+                
+                // Diffuse
+                float diff = max(dot(N, L), 0.0);
+                vec3 diffuse = diffuseColor * diff * diffuseInt;
+                
+                // Specular
+                float spec = pow(max(dot(V, R), 0.0), shininess);
+                vec3 specular = specularColor * spec * specularInt;
+
+                // Sum components AT THE VERTEX
+                vColor = ambient + diffuse + specular;
+                
+                gl_Position = projectionMatrix * viewMatrix * worldPos;
+            }
+        `;
+        const gouraudFragmentShader = `
+            varying vec3 vColor;
+            void main() {
+                // Simply output the interpolated vertex color
+                gl_FragColor = vec4(vColor, 1.0);
+            }
+        `;
+
+        // 2. Phong Shading (Lighting calculated in Fragment Shader)
+        const phongVertexShader = `
+            varying vec3 vNormal;
+            varying vec3 vWorldPos;
+
+            void main() {
+                vec4 worldPos = modelMatrix * vec4(position, 1.0);
+                vWorldPos = worldPos.xyz;
+                // Pass normal and position to fragment shader
+                vNormal = normalMatrix * normal;
+                gl_Position = projectionMatrix * viewMatrix * worldPos;
+            }
+        `;
+        const phongFragmentShader = `
+            uniform vec3 lightPos;
+            uniform vec3 viewPos;
+            uniform vec3 ambientColor; uniform float ambientInt;
+            uniform vec3 diffuseColor; uniform float diffuseInt;
+            uniform vec3 specularColor; uniform float specularInt;
+            uniform float shininess;
+
+            varying vec3 vNormal;
+            varying vec3 vWorldPos;
+
+            void main() {
+                vec3 N = normalize(vNormal);
+                vec3 L = normalize(lightPos - vWorldPos);
+                vec3 V = normalize(viewPos - vWorldPos);
+                vec3 R = reflect(-L, N);
+
+                // Ambient
+                vec3 ambient = ambientColor * ambientInt;
+                
+                // Diffuse
+                float diff = max(dot(N, L), 0.0);
+                vec3 diffuse = diffuseColor * diff * diffuseInt;
+                
+                // Specular
+                float spec = pow(max(dot(V, R), 0.0), shininess);
+                vec3 specular = specularColor * spec * specularInt;
+
+                // Sum components AT THE FRAGMENT (PIXEL)
+                vec3 finalColor = ambient + diffuse + specular;
+                
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        // --- MATERIAL & GEOMETRY ---
+        const uniforms = {
+            lightPos: { value: new THREE.Vector3(2, 2, 2) },
+            viewPos: { value: camera.position },
+            ambientColor: { value: new THREE.Color(0x0044ff) },
+            ambientInt: { value: 0.2 },
+            diffuseColor: { value: new THREE.Color(0x1188ff) },
+            diffuseInt: { value: 0.7 },
+            specularColor: { value: new THREE.Color(0xffffff) },
+            specularInt: { value: 1.0 },
+            shininess: { value: 32.0 }
+        };
+
+        const gouraudMaterial = new THREE.ShaderMaterial({
+            vertexShader: gouraudVertexShader,
+            fragmentShader: gouraudFragmentShader,
+            uniforms: uniforms
+        });
+
+        const phongMaterial = new THREE.ShaderMaterial({
+            vertexShader: phongVertexShader,
+            fragmentShader: phongFragmentShader,
+            uniforms: uniforms
+        });
+
+        let sphereGeometry = new THREE.SphereGeometry(1.5, 32, 32);
+        const mesh = new THREE.Mesh(sphereGeometry, phongMaterial);
+        scene.add(mesh);
+
+        // Visual representation of the light source
+        const lightHelperGeo = new THREE.SphereGeometry(0.1, 8, 8);
+        const lightHelperMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const lightHelper = new THREE.Mesh(lightHelperGeo, lightHelperMat);
+        lightHelper.position.copy(uniforms.lightPos.value);
+        scene.add(lightHelper);
+
+        // --- GUI CONTROLS ---
+        const params = {
+            shadingModel: 'Phong',
+            resolution: 12,
+            ambient: 0.2,
+            diffuse: 0.7,
+            specular: 1.0,
+            shininess: 32.0,
+            lightSpeed: 3
+        };
+
+        const gui = new GUI({ title: 'Shader Controls' });
+        
+        gui.add(params, 'shadingModel', ['Phong', 'Gouraud']).name('Shading Model').onChange(val => {
+            mesh.material = val === 'Phong' ? phongMaterial : gouraudMaterial;
+        });
+        
+        gui.add(params, 'resolution', 4, 64, 1).name('Mesh Resolution').onChange(val => {
+            mesh.geometry.dispose();
+            mesh.geometry = new THREE.SphereGeometry(1.5, val, val);
+        });
+
+        const lightFolder = gui.addFolder('Lighting Components');
+        lightFolder.add(params, 'ambient', 0, 1).name('Ambient Int.').onChange(v => uniforms.ambientInt.value = v);
+        lightFolder.add(params, 'diffuse', 0, 1).name('Diffuse Int.').onChange(v => uniforms.diffuseInt.value = v);
+        lightFolder.add(params, 'specular', 0, 2).name('Specular Int.').onChange(v => uniforms.specularInt.value = v);
+        lightFolder.add(params, 'shininess', 1, 100).name('Shininess').onChange(v => uniforms.shininess.value = v);
+        lightFolder.add(params, 'lightSpeed', 0, 20).name('Light Orbit Speed');
+
+        // --- ANIMATION LOOP ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime() * params.lightSpeed;
+            
+            // Orbit the light to dynamically show highlights
+            uniforms.lightPos.value.x = Math.sin(time) * 3;
+            uniforms.lightPos.value.z = Math.cos(time) * 3;
+            lightHelper.position.copy(uniforms.lightPos.value);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
