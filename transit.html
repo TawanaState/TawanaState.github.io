@@ -1,435 +1,289 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>In-Transit Media Network - Financial Optimizer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        slate: {
-                            950: '#070a13',
-                            900: '#0f1626',
-                            800: '#1e294b',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kombi Transit Ad Network - Revenue & Profit Simulator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    input[type=range] {
+      accent-color: #10b981;
+    }
+  </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen p-4 md:p-8">
-
-    <div class="max-w-7xl mx-auto space-y-6">
-        
-        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-900 pb-6 gap-4">
-            <div>
-                <h1 class="text-2xl font-black tracking-tight text-white flex items-center gap-3">
-                    <span class="p-2 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl shadow-lg shadow-indigo-500/20 text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </span>
-                    In-Transit Audio Network Profit Simulator
-                </h1>
-                <p class="text-slate-400 text-xs mt-1">Post-Tax Optimization & Mixed Multi-Tier Revenue Distribution Modeling</p>
-            </div>
-            <div class="bg-slate-900 border border-slate-800/60 rounded-xl px-4 py-2 flex items-center gap-3">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="text-xs font-mono text-slate-300">ZIMRA Tax-Compliant Deduction Engine</span>
-            </div>
+<body class="bg-slate-950 text-slate-100 min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans antialiased">
+  <div class="max-w-5xl mx-auto space-y-8">
+    
+    <!-- Header -->
+    <div class="border-b border-slate-800 pb-5">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Transit Ad Financial Engine</h1>
+          <p class="text-sm text-slate-400 mt-1">Real-time revenue, payout caps, and net platform profit modeling</p>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 space-y-1 backdrop-blur-sm">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Gross Revenue (Total Inflow)</p>
-                <p id="metricGross" class="text-3xl font-extrabold text-white">$0</p>
-                <p class="text-[11px] text-slate-500">All Advertiser Subscriptions</p>
-            </div>
-            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 space-y-1 backdrop-blur-sm">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pre-Tax Net Profit</p>
-                <p id="metricPreTaxProfit" class="text-3xl font-extrabold text-indigo-400">$0</p>
-                <p id="metricPreTaxMargin" class="text-[11px] text-indigo-400/80">0% Margin</p>
-            </div>
-            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 space-y-1 backdrop-blur-sm">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ZIMRA Corporate Tax</p>
-                <p id="metricTaxPaid" class="text-3xl font-extrabold text-rose-400">$0</p>
-                <p class="text-[11px] text-slate-500">Levied Strictly on Net Profit</p>
-            </div>
-            <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 space-y-1 backdrop-blur-sm ring-1 ring-emerald-500/20 bg-gradient-to-b from-slate-900/60 to-emerald-950/20">
-                <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Your Take-Home Profit</p>
-                <p id="metricPostTaxProfit" class="text-3xl font-extrabold text-emerald-400">$0</p>
-                <p class="text-[11px] text-slate-400">Pure Post-Tax Capital</p>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <div class="lg:col-span-5 bg-slate-900 border border-slate-800/80 rounded-2xl p-6 space-y-6">
-                <div>
-                    <h2 class="text-base font-bold text-white flex items-center gap-2">
-                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                        System Infrastructure Setup
-                    </h2>
-                    <p class="text-slate-400 text-[11px] mt-0.5">Adjust operational parameters to test financial thresholds.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between text-xs mb-1">
-                            <label class="font-medium text-slate-300">Fleet Scaling Size (N Vehicles)</label>
-                            <span id="labelFleetSize" class="font-bold text-indigo-400">50</span>
-                        </div>
-                        <input type="range" id="paramFleetSize" min="1" max="250" value="50" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs mb-1">
-                            <label class="font-medium text-slate-300">Max Capped Driver Payout / Mo</label>
-                            <span id="labelDriverCap" class="font-bold text-amber-400">$100.00</span>
-                        </div>
-                        <input type="range" id="paramDriverCap" min="20" max="200" step="5" value="100" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
-                        <p class="text-[10px] text-slate-500 mt-1">Hard earnings limitation ceiling per driver per month.</p>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs mb-1">
-                            <label class="font-medium text-slate-300">IoT Sync & Maintenance Reserve / Mo</label>
-                            <span id="labelOpsReserve" class="font-bold text-slate-300">$10.00</span>
-                        </div>
-                        <input type="range" id="paramOpsReserve" min="5" max="30" step="1" value="10" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-slate-400">
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs mb-1">
-                            <label class="font-medium text-slate-300">Effective Corporate Tax Rate (%)</label>
-                            <span id="labelTaxRate" class="font-bold text-rose-400">25%</span>
-                        </div>
-                        <input type="range" id="paramTaxRate" min="0" max="40" step="1" value="25" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-500">
-                    </div>
-                </div>
-
-                <div class="border-t border-slate-800/80 pt-5 space-y-4">
-                    <div>
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                            Dynamic Mixed Rate Card Engine
-                        </h3>
-                        <p class="text-slate-400 text-[10px] mt-0.5">Define your loop's exact advertiser distribution structure per vehicle.</p>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3.5 space-y-2">
-                            <div class="flex justify-between text-xs">
-                                <span class="font-semibold text-slate-200">Tier 1: Micro / Creator Slots ($30/mo)</span>
-                                <span id="labelT1Count" class="font-mono bg-slate-800 px-2 py-0.5 rounded text-indigo-400 font-bold">4</span>
-                            </div>
-                            <input type="range" id="mixT1Count" min="0" max="25" value="4" class="w-full h-1 bg-slate-800 appearance-none cursor-pointer accent-indigo-500">
-                            <div class="flex justify-between text-[10px] text-slate-500">
-                                <span>Upcoming Artists / Local Vendors</span>
-                                <span>Price/Slot: $30.00 USD</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3.5 space-y-2">
-                            <div class="flex justify-between text-xs">
-                                <span class="font-semibold text-slate-200">Tier 2: SME Corridor Slots ($60/mo)</span>
-                                <span id="labelT2Count" class="font-mono bg-slate-800 px-2 py-0.5 rounded text-violet-400 font-bold">2</span>
-                            </div>
-                            <input type="range" id="mixT2Count" min="0" max="20" value="2" class="w-full h-1 bg-slate-800 appearance-none cursor-pointer accent-violet-500">
-                            <div class="flex justify-between text-[10px] text-slate-500">
-                                <span>Geofenced Retailers / Colleges</span>
-                                <span>Price/Slot: $60.00 USD</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3.5 space-y-2">
-                            <div class="flex justify-between text-xs">
-                                <span class="font-semibold text-slate-200">Tier 3: Enterprise Slots ($150/mo)</span>
-                                <span id="labelT3Count" class="font-mono bg-slate-800 px-2 py-0.5 rounded text-emerald-400 font-bold">1</span>
-                            </div>
-                            <input type="range" id="mixT3Count" min="0" max="15" value="1" class="w-full h-1 bg-slate-800 appearance-none cursor-pointer accent-emerald-500">
-                            <div class="flex justify-between text-[10px] text-slate-500">
-                                <span>Corporate Banks / Telecom Networks</span>
-                                <span>Price/Slot: $150.00 USD</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="capacityBadge" class="p-3 rounded-xl border text-center font-mono text-xs font-bold transition-all duration-300">
-                    </div>
-            </div>
-
-            <div class="lg:col-span-7 space-y-6">
-                
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div class="md:col-span-7 bg-slate-900 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Fleet Scale Projections</h3>
-                            <span class="text-[10px] text-slate-500">Scale Vector: 10 - 200 Vehicles</span>
-                        </div>
-                        <div class="h-52">
-                            <canvas id="canvasScaleLine"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="md:col-span-5 bg-slate-900 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Revenue Distribution Mix</h3>
-                            <span class="text-[10px] text-slate-500">Post-Tax Breakdown</span>
-                        </div>
-                        <div class="h-44 flex items-center justify-center relative">
-                            <canvas id="canvasRevenuePie"></canvas>
-                        </div>
-                        <div class="text-[10px] text-slate-500 text-center mt-2 border-t border-slate-800/60 pt-2">
-                            Driver payout is fully deducted before taxes are assessed.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-5 space-y-4">
-                    <h3 class="text-xs font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-2">Unit Level Performance Variables (Per Kombi)</h3>
-                    
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-                        <div class="bg-slate-950/60 border border-slate-800/60 p-3 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-medium">Gross Revenue</p>
-                            <p id="tblUnitGross" class="text-base font-bold text-white mt-1">$0.00</p>
-                        </div>
-                        <div class="bg-slate-950/60 border border-slate-800/60 p-3 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-medium">Driver Reward Pool</p>
-                            <p id="tblUnitPayout" class="text-base font-bold text-amber-400 mt-1">-$0.00</p>
-                        </div>
-                        <div class="bg-slate-950/60 border border-slate-800/60 p-3 rounded-xl">
-                            <p class="text-[10px] text-slate-400 font-medium">Operating Expenses</p>
-                            <p id="tblUnitOps" class="text-base font-bold text-slate-400 mt-1">-$0.00</p>
-                        </div>
-                        <div class="bg-slate-950/60 border border-slate-800/60 p-3 rounded-xl bg-gradient-to-b from-slate-950/60 to-emerald-950/10">
-                            <p class="text-[10px] text-emerald-400 font-semibold">Pre-Tax Profit</p>
-                            <p id="tblUnitNet" class="text-base font-bold text-emerald-400 mt-1">$0.00</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-950/50 rounded-xl p-4 border border-slate-800/40 text-xs space-y-2">
-                        <div class="flex justify-between">
-                            <span class="text-slate-400">Total Loop Active Brands:</span>
-                            <span id="tblTotalBrands" class="font-bold text-white">0 Slots Active</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-400">Hardware Capital Investment Recovery Runway (CAPEX Payback):</span>
-                            <span id="tblUnitPayback" class="font-bold text-indigo-400">0 Days</span>
-                        </div>
-                        <div class="flex justify-between border-t border-slate-800/80 pt-2 text-[11px]">
-                            <span class="text-slate-300 font-medium">Target Pre-Tax Yield Rate per Vehicle:</span>
-                            <span id="tblUnitMargin" class="font-bold text-emerald-400">0%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-5 space-y-3 bg-gradient-to-r from-slate-900 to-indigo-950/10">
-                    <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                        Capital Accumulation Runway & Future Scaling Analysis
-                    </h3>
-                    <p class="text-slate-300 text-xs leading-relaxed">
-                        By deploying this dynamic pricing mix across a fleet loop, your post-tax retained profit reaches an annual operational run-rate of 
-                        <strong id="strRetainedAnnual" class="text-emerald-400 font-bold">$0.00 USD</strong>. Because driver incentives are strictly capped, adding premium slots generates pure margin that flows directly into your corporate treasury pool, enabling clean asset expansion into real estate or advanced logistical networks without capitalization stress.
-                    </p>
-                </div>
-
-            </div>
-        </div>
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          Trip-Verified Model ($0.25/slot)
+        </span>
+      </div>
     </div>
 
-    <script>
-        // DOM Form Elements Map
-        const fields = {
-            fleetSize: document.getElementById('paramFleetSize'),
-            driverCap: document.getElementById('paramDriverCap'),
-            opsReserve: document.getElementById('paramOpsReserve'),
-            taxRate: document.getElementById('paramTaxRate'),
-            t1Count: document.getElementById('mixT1Count'),
-            t2Count: document.getElementById('mixT2Count'),
-            t3Count: document.getElementById('mixT3Count')
-        };
+    <!-- Sliders & Control Panel -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+      
+      <!-- Kombi Fleet Slider -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <label for="kombiCount" class="text-sm font-semibold text-slate-200">Active Kombi Fleet Size</label>
+          <span class="text-lg font-bold text-emerald-400"><span id="kombiCountVal">10</span> Kombis</span>
+        </div>
+        <input id="kombiCount" type="range" min="1" max="150" value="10" step="1" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+        <div class="flex justify-between text-xs text-slate-500">
+          <span>1 Kombi</span>
+          <span>50 Kombis</span>
+          <span>100 Kombis</span>
+          <span>150 Kombis</span>
+        </div>
+      </div>
 
-        const nodes = {
-            fleetSize: document.getElementById('labelFleetSize'),
-            driverCap: document.getElementById('labelDriverCap'),
-            opsReserve: document.getElementById('labelOpsReserve'),
-            taxRate: document.getElementById('labelTaxRate'),
-            t1Count: document.getElementById('labelT1Count'),
-            t2Count: document.getElementById('labelT2Count'),
-            t3Count: document.getElementById('labelT3Count')
-        };
+      <!-- Slots Occupied Slider -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <label for="slotsOccupied" class="text-sm font-semibold text-slate-200">Occupied Slots per Trip</label>
+          <span class="text-lg font-bold text-emerald-400"><span id="slotsOccupiedVal">4</span> / 4 Slots</span>
+        </div>
+        <input id="slotsOccupied" type="range" min="1" max="4" value="4" step="1" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+        <div class="flex justify-between text-xs text-slate-500">
+          <span>1 Slot (25%)</span>
+          <span>2 Slots (50%)</span>
+          <span>3 Slots (75%)</span>
+          <span>4 Slots (100%)</span>
+        </div>
+      </div>
 
-        let lineChartInstance;
-        let pieChartInstance;
+      <!-- Secondary Modifiers -->
+      <div class="md:col-span-2 pt-4 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+          <span class="text-slate-400 block mb-1">Fixed Trip Volume</span>
+          <span class="font-semibold text-slate-200 text-sm">10 Trips / Kombi / Day</span>
+        </div>
+        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+          <span class="text-slate-400 block mb-1">Unit Ad Price</span>
+          <span class="font-semibold text-slate-200 text-sm">$0.25 USD / Slot</span>
+        </div>
+        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+          <span class="text-slate-400 block mb-1">Driver Payout Cap</span>
+          <span class="font-semibold text-emerald-400 text-sm">$100.00 USD / Month</span>
+        </div>
+      </div>
+    </div>
 
-        function buildCharts() {
-            // Line Chart Configuration
-            const lineCtx = document.getElementById('canvasScaleLine').getContext('2d');
-            lineChartInstance = new Chart(lineCtx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [
-                        { label: 'Gross', data: [], borderColor: '#6366f1', borderWidth: 2, pointRadius: 1, fill: false, tension: 0.2 },
-                        { label: 'Take-Home', data: [], borderColor: '#10b981', borderWidth: 2, pointRadius: 1, fill: false, tension: 0.2 }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } },
-                    scales: {
-                        x: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', font: { size: 9 } } },
-                        y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', font: { size: 9 } } }
-                    }
-                }
-            });
+    <!-- Live Performance Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Daily Card -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">Daily Output (1 Day)</div>
+        <div class="mt-4 text-3xl font-extrabold text-white" id="dailyNetProfit">$61.54</div>
+        <div class="text-xs text-emerald-400 font-medium mt-1">Platform Net Profit</div>
+        <div class="mt-4 pt-3 border-t border-slate-800/80 space-y-1.5 text-xs text-slate-400">
+          <div class="flex justify-between"><span>Gross Revenue:</span> <span class="font-semibold text-slate-200" id="dailyGross">$100.00</span></div>
+          <div class="flex justify-between"><span>Driver Distribution:</span> <span class="font-semibold text-amber-400" id="dailyDriver">$38.46</span></div>
+          <div class="flex justify-between"><span>Fleet Trips Run:</span> <span class="font-semibold text-slate-200" id="dailyTrips">100</span></div>
+        </div>
+      </div>
 
-            // Pie Chart Configuration
-            const pieCtx = document.getElementById('canvasRevenuePie').getContext('2d');
-            pieChartInstance = new Chart(pieCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Take-Home Profit', 'Driver Payouts', 'Corporate Tax', 'Ops Reserve'],
-                    datasets: [{
-                        data: [0, 0, 0, 0],
-                        backgroundColor: ['#10b981', '#f59e0b', '#f43f5e', '#64748b'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    cutout: '75%'
-                }
-            });
-        }
+      <!-- Weekly Card -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">Weekly Output (6 Days)</div>
+        <div class="mt-4 text-3xl font-extrabold text-white" id="weeklyNetProfit">$369.23</div>
+        <div class="text-xs text-emerald-400 font-medium mt-1">Platform Net Profit</div>
+        <div class="mt-4 pt-3 border-t border-slate-800/80 space-y-1.5 text-xs text-slate-400">
+          <div class="flex justify-between"><span>Gross Revenue:</span> <span class="font-semibold text-slate-200" id="weeklyGross">$600.00</span></div>
+          <div class="flex justify-between"><span>Driver Distribution:</span> <span class="font-semibold text-amber-400" id="weeklyDriver">$230.77</span></div>
+          <div class="flex justify-between"><span>Fleet Trips Run:</span> <span class="font-semibold text-slate-200" id="weeklyTrips">600</span></div>
+        </div>
+      </div>
 
-        function runCalculationEngine() {
-            // Extraction of Input Parameter Coefficients
-            const N = parseInt(fields.fleetSize.value);
-            const capDriver = parseFloat(fields.driverCap.value);
-            const opsReserve = parseFloat(fields.opsReserve.value);
-            const rateTax = parseFloat(fields.taxRate.value) / 100;
+      <!-- Monthly Card -->
+      <div class="bg-gradient-to-b from-slate-900 to-slate-900/90 border-2 border-emerald-500/30 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div class="text-xs uppercase font-bold text-emerald-400 tracking-wider">Monthly Run-Rate (26 Days)</div>
+        <div class="mt-4 text-3xl font-extrabold text-emerald-400" id="monthlyNetProfit">$1,600.00</div>
+        <div class="text-xs text-slate-400 font-medium mt-1">Platform Net Profit</div>
+        <div class="mt-4 pt-3 border-t border-slate-800/80 space-y-1.5 text-xs text-slate-400">
+          <div class="flex justify-between"><span>Gross Revenue:</span> <span class="font-semibold text-slate-200" id="monthlyGross">$2,600.00</span></div>
+          <div class="flex justify-between">
+            <span>Total Driver Payouts:</span> 
+            <span class="font-semibold text-amber-400" id="monthlyDriver">$1,000.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Cap Status:</span> 
+            <span class="font-semibold text-xs text-emerald-400" id="capStatusBadge">Capped at $100/mo</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            const cT1 = parseInt(fields.t1Count.value);
-            const cT2 = parseInt(fields.t2Count.value);
-            const cT3 = parseInt(fields.t3Count.value);
+    <!-- Structured Financial Audit Table -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      <div class="p-5 border-b border-slate-800">
+        <h2 class="text-base font-bold text-slate-100">Consolidated Financial Statement</h2>
+        <p class="text-xs text-slate-400 mt-0.5">Auditable breakdown of advertiser revenue vs driver payout ceilings</p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm">
+          <thead class="bg-slate-950 text-slate-400 font-semibold border-b border-slate-800">
+            <tr>
+              <th class="py-3.5 px-4">Period</th>
+              <th class="py-3.5 px-4">Fleet Trips</th>
+              <th class="py-3.5 px-4">Ad Impressions (Slots)</th>
+              <th class="py-3.5 px-4">Gross Revenue</th>
+              <th class="py-3.5 px-4">Driver Distributions</th>
+              <th class="py-3.5 px-4 text-emerald-400">Net Platform Profit</th>
+              <th class="py-3.5 px-4">Net Margin</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/60 font-mono text-xs">
+            <tr class="hover:bg-slate-800/30">
+              <td class="py-3.5 px-4 font-sans font-semibold text-slate-200">Per Day</td>
+              <td class="py-3.5 px-4 text-slate-300" id="tableDailyTrips">-</td>
+              <td class="py-3.5 px-4 text-slate-300" id="tableDailySlots">-</td>
+              <td class="py-3.5 px-4 text-slate-200 font-semibold" id="tableDailyGross">-</td>
+              <td class="py-3.5 px-4 text-amber-400" id="tableDailyDriver">-</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-bold" id="tableDailyNet">-</td>
+              <td class="py-3.5 px-4 text-slate-300" id="tableDailyMargin">-</td>
+            </tr>
+            <tr class="hover:bg-slate-800/30">
+              <td class="py-3.5 px-4 font-sans font-semibold text-slate-200">Per Week (6 Days)</td>
+              <td class="py-3.5 px-4 text-slate-300" id="tableWeeklyTrips">-</td>
+              <td class="py-3.5 px-4 text-slate-300" id="tableWeeklySlots">-</td>
+              <td class="py-3.5 px-4 text-slate-200 font-semibold" id="tableWeeklyGross">-</td>
+              <td class="py-3.5 px-4 text-amber-400" id="tableWeeklyDriver">-</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-bold" id="tableWeeklyNet">-</td>
+              <td class="py-3.5 px-4 text-slate-300" id="tableWeeklyMargin">-</td>
+            </tr>
+            <tr class="bg-slate-950/40 hover:bg-slate-800/30">
+              <td class="py-3.5 px-4 font-sans font-semibold text-slate-200">Per Month (26 Days)</td>
+              <td class="py-3.5 px-4 text-slate-300" id="tableMonthlyTrips">-</td>
+              <td class="py-3.5 px-4 text-slate-300" id="tableMonthlySlots">-</td>
+              <td class="py-3.5 px-4 text-slate-200 font-bold" id="tableMonthlyGross">-</td>
+              <td class="py-3.5 px-4 text-amber-400 font-semibold" id="tableMonthlyDriver">-</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-extrabold" id="tableMonthlyNet">-</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-bold" id="tableMonthlyMargin">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-            // Display Value Synchronization Updates
-            nodes.fleetSize.textContent = N;
-            nodes.driverCap.textContent = `$${capDriver.toFixed(2)}`;
-            nodes.opsReserve.textContent = `$${opsReserve.toFixed(2)}`;
-            nodes.taxRate.textContent = `${fields.taxRate.value}%`;
-            nodes.t1Count.textContent = cT1;
-            nodes.t2Count.textContent = cT2;
-            nodes.t3Count.textContent = cT3;
+  </div>
 
-            // Mathematical Evaluation of Mixed Revenue Tiers
-            const revT1 = cT1 * 30.00;
-            const revT2 = cT2 * 60.00;
-            const revT3 = cT3 * 150.00;
-            const totalBrandsCount = cT1 + cT2 + cT3;
-            
-            // Per Vehicle Unit Financial Projections Calculations
-            const vehicleGross = revT1 + revT2 + revT3;
-            const vehicleOps = opsReserve;
-            const vehiclePayout = Math.min(capDriver, vehicleGross * 0.4); 
-            const vehiclePreTaxProfit = Math.max(0, vehicleGross - (vehiclePayout + vehicleOps));
-            const vehicleTax = vehiclePreTaxProfit * rateTax;
-            const vehiclePostTaxNet = vehiclePreTaxProfit - vehicleTax;
-            
-            const unitMarginPercent = vehicleGross > 0 ? (vehiclePreTaxProfit / vehicleGross) * 100 : 0;
-            const paybackRunwayDays = vehiclePreTaxProfit > 0 ? Math.ceil((45.00 / vehiclePreTaxProfit) * 30) : 0;
+  <script>
+    const kombiSlider = document.getElementById('kombiCount');
+    const slotsSlider = document.getElementById('slotsOccupied');
+    const kombiVal = document.getElementById('kombiCountVal');
+    const slotsVal = document.getElementById('slotsOccupiedVal');
 
-            // Fleet Level Structural Aggregations Calculations
-            const fleetGross = vehicleGross * N;
-            const fleetPayout = vehiclePayout * N;
-            const fleetOps = vehicleOps * N;
-            const fleetPreTaxProfit = vehiclePreTaxProfit * N;
-            const fleetTaxTotal = vehicleTax * N;
-            const fleetPostTaxTakeHome = vehiclePostTaxNet * N;
-            
-            const preTaxMarginPercent = fleetGross > 0 ? (fleetPreTaxProfit / fleetGross) * 100 : 0;
-            const annualRunRateRetained = fleetPostTaxTakeHome * 12;
+    const fmt = (num) => '$' + Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtInt = (num) => Number(num).toLocaleString('en-US');
 
-            // Dashboard Metrics UI Updates
-            document.getElementById('metricGross').textContent = `$${Math.round(fleetGross).toLocaleString()}`;
-            document.getElementById('metricPreTaxProfit').textContent = `$${Math.round(fleetPreTaxProfit).toLocaleString()}`;
-            document.getElementById('metricPreTaxMargin').textContent = `${preTaxMarginPercent.toFixed(1)}% Pre-Tax Margin`;
-            document.getElementById('metricTaxPaid').textContent = `$${Math.round(fleetTaxTotal).toLocaleString()}`;
-            document.getElementById('metricPostTaxProfit').textContent = `$${Math.round(fleetPostTaxTakeHome).toLocaleString()}`;
+    function calculate() {
+      const kombis = parseInt(kombiSlider.value, 10);
+      const slots = parseInt(slotsSlider.value, 10);
 
-            // Itemized Breakdown Data Matrix Display Table Mapping Updates
-            document.getElementById('tblUnitGross').textContent = `$${vehicleGross.toFixed(2)}`;
-            document.getElementById('tblUnitPayout').textContent = `-$${vehiclePayout.toFixed(2)}`;
-            document.getElementById('tblUnitOps').textContent = `-$${vehicleOps.toFixed(2)}`;
-            document.getElementById('tblUnitNet').textContent = `$${vehiclePreTaxProfit.toFixed(2)}`;
-            document.getElementById('tblTotalBrands').textContent = `${totalBrandsCount} Active Brands (${cT1} Micro, ${cT2} SME, ${cT3} Corp)`;
-            document.getElementById('tblUnitPayback').textContent = paybackRunwayDays > 0 ? `${paybackRunwayDays} Days Runway` : 'No Operational Breakeven';
-            document.getElementById('tblUnitMargin').textContent = `${unitMarginPercent.toFixed(1)}% Yield`;
-            document.getElementById('strRetainedAnnual').textContent = `$${Math.round(annualRunRateRetained).toLocaleString()} USD`;
+      kombiVal.textContent = kombis;
+      slotsVal.textContent = slots;
 
-            // Loop Capacity Optimization Safety Alert Status Badge
-            const badge = document.getElementById('capacityBadge');
-            if (totalBrandsCount === 0) {
-                badge.className = "p-3 rounded-xl border text-center font-mono text-xs font-bold bg-slate-950 border-slate-800 text-slate-500";
-                badge.textContent = "System Status: Idle / Zero Inventory Utilization";
-            } else if (totalBrandsCount <= 12) {
-                badge.className = "p-3 rounded-xl border text-center font-mono text-xs font-bold bg-emerald-950/20 border-emerald-800/60 text-emerald-400";
-                badge.textContent = `Loop Status: Balanced Optimization (${totalBrandsCount} Brands Loop)`;
-            } else if (totalBrandsCount <= 24) {
-                badge.className = "p-3 rounded-xl border text-center font-mono text-xs font-bold bg-indigo-950/20 border-indigo-800/60 text-indigo-400";
-                badge.textContent = `Loop Status: High-Density Rotation Matrix (${totalBrandsCount} Brands Spread)`;
-            } else {
-                badge.className = "p-3 rounded-xl border text-center font-mono text-xs font-bold bg-amber-950/20 border-amber-800/60 text-amber-400";
-                badge.textContent = `Loop Status: Max Capacity / Multi-Hour Intercepts (${totalBrandsCount} Brands Active)`;
-            }
+      const pricePerSlot = 0.25;
+      const tripsPerDay = 10;
+      const daysPerWeek = 6;
+      const daysPerMonth = 26;
+      const maxCapPerKombi = 100.00;
 
-            // Pie Chart Dataset Refresh Calculations
-            pieChartInstance.data.datasets[0].data = [
-                fleetPostTaxTakeHome,
-                fleetPayout,
-                fleetTaxTotal,
-                fleetOps
-            ];
-            pieChartInstance.update();
+      // Single Kombi Math
+      const revPerTripSingle = slots * pricePerSlot;
+      const dailyGrossSingle = tripsPerDay * revPerTripSingle;
+      const monthlyGrossSingle = dailyGrossSingle * daysPerMonth;
 
-            // Line Chart Vector Trajectory Scaling Computation Iteration
-            const trajectoryLabels = [];
-            const trajectoryGross = [];
-            const trajectoryRetained = [];
-            
-            for (let step = 10; step <= 200; step += 10) {
-                trajectoryLabels.push(`${step} v`);
-                trajectoryGross.push(step * vehicleGross);
-                trajectoryRetained.push(step * vehiclePostTaxNet);
-            }
-            
-            lineChartInstance.data.labels = trajectoryLabels;
-            lineChartInstance.data.datasets[0].data = trajectoryGross;
-            lineChartInstance.data.datasets[1].data = trajectoryRetained;
-            lineChartInstance.update();
-        }
+      // Dynamic driver payout calculation:
+      // Base share is ~38% of gross, capped at $100/mo ($3.846/day) per Kombi
+      const uncappedMonthlyDriverSingle = monthlyGrossSingle * 0.384615;
+      const monthlyDriverSingle = Math.min(uncappedMonthlyDriverSingle, maxCapPerKombi);
+      const dailyDriverSingle = monthlyDriverSingle / daysPerMonth;
+      const weeklyDriverSingle = dailyDriverSingle * daysPerWeek;
 
-        // System Interface Intercept Bindings Setup
-        window.addEventListener('load', () => {
-            buildCharts();
-            runCalculationEngine();
-            
-            // Map and bind events to all properties
-            Object.values(fields).forEach(element => {
-                element.addEventListener('input', runCalculationEngine);
-            });
-        });
-    </script>
+      // Fleet Aggregates
+      const dailyGross = dailyGrossSingle * kombis;
+      const weeklyGross = dailyGross * daysPerWeek;
+      const monthlyGross = dailyGrossSingle * daysPerMonth * kombis;
+
+      const dailyDriver = dailyDriverSingle * kombis;
+      const weeklyDriver = weeklyDriverSingle * kombis;
+      const monthlyDriver = monthlyDriverSingle * kombis;
+
+      const dailyNet = dailyGross - dailyDriver;
+      const weeklyNet = weeklyGross - weeklyDriver;
+      const monthlyNet = monthlyGross - monthlyDriver;
+
+      // Trips & Ad Plays
+      const dailyTrips = kombis * tripsPerDay;
+      const weeklyTrips = dailyTrips * daysPerWeek;
+      const monthlyTrips = dailyTrips * daysPerMonth;
+
+      const dailySlots = dailyTrips * slots;
+      const weeklySlots = weeklyTrips * slots;
+      const monthlySlots = monthlyTrips * slots;
+
+      // Update Cards
+      document.getElementById('dailyNetProfit').textContent = fmt(dailyNet);
+      document.getElementById('dailyGross').textContent = fmt(dailyGross);
+      document.getElementById('dailyDriver').textContent = fmt(dailyDriver);
+      document.getElementById('dailyTrips').textContent = fmtInt(dailyTrips) + ' trips';
+
+      document.getElementById('weeklyNetProfit').textContent = fmt(weeklyNet);
+      document.getElementById('weeklyGross').textContent = fmt(weeklyGross);
+      document.getElementById('weeklyDriver').textContent = fmt(weeklyDriver);
+      document.getElementById('weeklyTrips').textContent = fmtInt(weeklyTrips) + ' trips';
+
+      document.getElementById('monthlyNetProfit').textContent = fmt(monthlyNet);
+      document.getElementById('monthlyGross').textContent = fmt(monthlyGross);
+      document.getElementById('monthlyDriver').textContent = fmt(monthlyDriver);
+
+      const capBadge = document.getElementById('capStatusBadge');
+      if (uncappedMonthlyDriverSingle >= maxCapPerKombi) {
+        capBadge.textContent = 'Hard Cap Active ($100/mo)';
+        capBadge.className = 'font-semibold text-xs text-amber-400';
+      } else {
+        capBadge.textContent = 'Uncapped (' + Math.round((monthlyDriverSingle/monthlyGrossSingle)*100) + '% payout)';
+        capBadge.className = 'font-semibold text-xs text-emerald-400';
+      }
+
+      // Update Table
+      document.getElementById('tableDailyTrips').textContent = fmtInt(dailyTrips);
+      document.getElementById('tableDailySlots').textContent = fmtInt(dailySlots);
+      document.getElementById('tableDailyGross').textContent = fmt(dailyGross);
+      document.getElementById('tableDailyDriver').textContent = '-' + fmt(dailyDriver);
+      document.getElementById('tableDailyNet').textContent = fmt(dailyNet);
+      document.getElementById('tableDailyMargin').textContent = ((dailyNet / dailyGross) * 100).toFixed(1) + '%';
+
+      document.getElementById('tableWeeklyTrips').textContent = fmtInt(weeklyTrips);
+      document.getElementById('tableWeeklySlots').textContent = fmtInt(weeklySlots);
+      document.getElementById('tableWeeklyGross').textContent = fmt(weeklyGross);
+      document.getElementById('tableWeeklyDriver').textContent = '-' + fmt(weeklyDriver);
+      document.getElementById('tableWeeklyNet').textContent = fmt(weeklyNet);
+      document.getElementById('tableWeeklyMargin').textContent = ((weeklyNet / weeklyGross) * 100).toFixed(1) + '%';
+
+      document.getElementById('tableMonthlyTrips').textContent = fmtInt(monthlyTrips);
+      document.getElementById('tableMonthlySlots').textContent = fmtInt(monthlySlots);
+      document.getElementById('tableMonthlyGross').textContent = fmt(monthlyGross);
+      document.getElementById('tableMonthlyDriver').textContent = '-' + fmt(monthlyDriver);
+      document.getElementById('tableMonthlyNet').textContent = fmt(monthlyNet);
+      document.getElementById('tableMonthlyMargin').textContent = ((monthlyNet / monthlyGross) * 100).toFixed(1) + '%';
+    }
+
+    kombiSlider.addEventListener('input', calculate);
+    slotsSlider.addEventListener('input', calculate);
+
+    calculate();
+  </script>
 </body>
 </html>
